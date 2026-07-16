@@ -6,6 +6,7 @@ import com.example.kawashimashokudoapi.dto.RegisterRequest;
 import com.example.kawashimashokudoapi.entity.User;
 import com.example.kawashimashokudoapi.repository.UserRepository;
 import com.example.kawashimashokudoapi.security.JwtService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) {
         if (userRepository.existsByEmail(req.getEmail())) {
             return ResponseEntity.badRequest().body("このメールアドレスは既に登録されています");
         }
@@ -49,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req) {
         User user = userRepository.findByEmail(req.getEmail())
                 .orElse(null);
 
