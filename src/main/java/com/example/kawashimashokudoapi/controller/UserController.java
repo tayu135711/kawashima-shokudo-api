@@ -1,8 +1,7 @@
 package com.example.kawashimashokudoapi.controller;
 
-import com.example.kawashimashokudoapi.entity.User;
+import com.example.kawashimashokudoapi.dto.UserResponse;
 import com.example.kawashimashokudoapi.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,16 +9,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
 
-    @PostMapping
-    public User createUser(@RequestBody User user){
-        return userRepository.save(user);
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserResponse::new)
+                .toList();
     }
 }

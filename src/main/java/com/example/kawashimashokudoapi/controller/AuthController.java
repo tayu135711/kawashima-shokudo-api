@@ -30,6 +30,11 @@ public class AuthController {
             return ResponseEntity.badRequest().body("このメールアドレスは既に登録されています");
         }
 
+        var allowedRoles = java.util.Set.of("customer", "store", "courier");
+        if (!allowedRoles.contains(req.getRole())) {
+            return ResponseEntity.badRequest().body("指定できないroleです");
+        }
+
         User user = new User();
         user.setName(req.getName());
         user.setEmail(req.getEmail());
